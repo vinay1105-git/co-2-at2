@@ -1,0 +1,106 @@
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+class Violation
+{
+private:
+    string vehicleNumber;
+    string ownerName;
+    string violationType;
+    double fineAmount;
+    static int totalViolations;
+
+    bool validVehicleNumber(string v)
+    {
+        return !v.empty();
+    }
+
+    bool validViolationType(string v)
+    {
+        return v == "Signal Jump" || v == "Overspeeding" || v == "No Helmet" || v == "Wrong Parking";
+    }
+
+public:
+    Violation()
+    {
+        fineAmount = 0;
+    }
+
+    void inputDetails()
+    {
+        do
+        {
+            cout << "Enter Vehicle Number: ";
+            getline(cin, vehicleNumber);
+        } while (!validVehicleNumber(vehicleNumber));
+
+        cout << "Enter Owner Name: ";
+        getline(cin, ownerName);
+
+        do
+        {
+            cout << "Enter Violation Type (Signal Jump/Overspeeding/No Helmet/Wrong Parking): ";
+            getline(cin, violationType);
+        } while (!validViolationType(violationType));
+
+        calculateFine();
+        totalViolations++;
+    }
+
+    void calculateFine()
+    {
+        if (violationType == "Signal Jump")
+            fineAmount = 1000;
+        else if (violationType == "Overspeeding")
+            fineAmount = 1500;
+        else if (violationType == "No Helmet")
+            fineAmount = 500;
+        else if (violationType == "Wrong Parking")
+            fineAmount = 300;
+    }
+
+    void displayReport()
+    {
+        cout << "\nVehicle Number : " << vehicleNumber;
+        cout << "\nOwner Name     : " << ownerName;
+        cout << "\nViolation Type : " << violationType;
+        cout << "\nFine Amount    : " << fineAmount << endl;
+    }
+
+    static void displayTotalViolations()
+    {
+        cout << "\nTotal Violations Recorded: " << totalViolations << endl;
+    }
+};
+
+int Violation::totalViolations = 0;
+
+int main()
+{
+    int n;
+
+    cout << "Enter Number of Violation Records: ";
+    cin >> n;
+    cin.ignore();
+
+    Violation v[n];
+
+    for (int i = 0; i < n; i++)
+    {
+        cout << "\nEnter Details for Record " << i + 1 << endl;
+        v[i].inputDetails();
+    }
+
+    cout << "\n--- Violation Reports ---\n";
+
+    for (int i = 0; i < n; i++)
+    {
+        v[i].displayReport();
+    }
+
+    Violation::displayTotalViolations();
+
+    return 0;
+}
