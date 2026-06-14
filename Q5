@@ -1,0 +1,85 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Product
+{
+private:
+    string productName;
+    double price;
+    int quantity;
+    static int totalProducts;
+
+public:
+    void getData()
+    {
+        cout << "Enter Product Name: ";
+        cin.ignore();
+        getline(cin, productName);
+
+        do
+        {
+            cout << "Enter Price: ";
+            cin >> price;
+        } while (price <= 0);
+
+        do
+        {
+            cout << "Enter Quantity: ";
+            cin >> quantity;
+        } while (quantity <= 0);
+
+        totalProducts++;
+    }
+
+    double calculateTotal()
+    {
+        return price * quantity;
+    }
+
+    void display()
+    {
+        cout << "\nProduct Name : " << productName;
+        cout << "\nPrice        : " << price;
+        cout << "\nQuantity     : " << quantity;
+        cout << "\nCost         : " << calculateTotal() << endl;
+    }
+
+    static void displayTotalProducts()
+    {
+        cout << "\nTotal Products Added: " << totalProducts << endl;
+    }
+};
+
+int Product::totalProducts = 0;
+
+int main()
+{
+    int n;
+    double totalBill = 0;
+
+    cout << "Enter Number of Products: ";
+    cin >> n;
+
+    Product cart[n];
+
+    for (int i = 0; i < n; i++)
+    {
+        cout << "\nEnter Details for Product " << i + 1 << endl;
+        cart[i].getData();
+    }
+
+    cout << "\n--- Shopping Cart Details ---\n";
+
+    for (int i = 0; i < n; i++)
+    {
+        cart[i].display();
+        totalBill += cart[i].calculateTotal();
+    }
+
+    Product::displayTotalProducts();
+
+    cout << "\nTotal Bill = " << totalBill << endl;
+
+    return 0;
+}
