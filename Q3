@@ -1,0 +1,107 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Warehouse
+{
+private:
+    int itemID;
+    string name;
+    int quantity;
+    string location;
+    static int totalItemsStored;
+
+public:
+    Warehouse()
+    {
+        itemID = 0;
+        quantity = 0;
+    }
+
+    void addItem()
+    {
+        cout << "Enter Item ID: ";
+        cin >> itemID;
+        cin.ignore();
+
+        cout << "Enter Item Name: ";
+        getline(cin, name);
+
+        do
+        {
+            cout << "Enter Quantity: ";
+            cin >> quantity;
+        } while (quantity < 0);
+
+        cin.ignore();
+
+        cout << "Enter Location: ";
+        getline(cin, location);
+
+        totalItemsStored++;
+    }
+
+    void addInventory(int qty)
+    {
+        if (qty > 0)
+            quantity += qty;
+    }
+
+    void removeInventory(int qty)
+    {
+        if (qty > 0 && qty <= quantity)
+            quantity -= qty;
+        else
+            cout << "Invalid stock removal.\n";
+    }
+
+    void updateInventory(int qty)
+    {
+        if (qty >= 0)
+            quantity = qty;
+        else
+            cout << "Invalid stock level.\n";
+    }
+
+    void displayItem()
+    {
+        cout << "\nItem ID  : " << itemID;
+        cout << "\nName     : " << name;
+        cout << "\nQuantity : " << quantity;
+        cout << "\nLocation : " << location << endl;
+    }
+
+    static void displayTotalItems()
+    {
+        cout << "\nTotal Items Stored: " << totalItemsStored << endl;
+    }
+};
+
+int Warehouse::totalItemsStored = 0;
+
+int main()
+{
+    int n;
+
+    cout << "Enter Number of Items: ";
+    cin >> n;
+
+    Warehouse items[n];
+
+    for (int i = 0; i < n; i++)
+    {
+        cout << "\nEnter Details for Item " << i + 1 << endl;
+        items[i].addItem();
+    }
+
+    cout << "\n--- Inventory Details ---\n";
+
+    for (int i = 0; i < n; i++)
+    {
+        items[i].displayItem();
+    }
+
+    Warehouse::displayTotalItems();
+
+    return 0;
+}
