@@ -1,0 +1,95 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Member
+{
+private:
+    int memberID;
+    string name;
+    string planType;
+    double fee;
+    static int totalActiveMembers;
+
+    bool validPlan(string plan)
+    {
+        return plan == "Basic" || plan == "Standard" || plan == "Premium";
+    }
+
+public:
+    Member()
+    {
+        fee = 0;
+    }
+
+    void assignPlan()
+    {
+        cout << "Enter Member ID: ";
+        cin >> memberID;
+        cin.ignore();
+
+        cout << "Enter Name: ";
+        getline(cin, name);
+
+        do
+        {
+            cout << "Enter Plan Type (Basic/Standard/Premium): ";
+            getline(cin, planType);
+        } while (!validPlan(planType));
+
+        calculateFee();
+        totalActiveMembers++;
+    }
+
+    void calculateFee()
+    {
+        if (planType == "Basic")
+            fee = 1000;
+        else if (planType == "Standard")
+            fee = 2000;
+        else if (planType == "Premium")
+            fee = 3000;
+    }
+
+    void displayDetails()
+    {
+        cout << "\nMember ID : " << memberID;
+        cout << "\nName      : " << name;
+        cout << "\nPlan Type : " << planType;
+        cout << "\nFee       : " << fee << endl;
+    }
+
+    static void displayTotalMembers()
+    {
+        cout << "\nTotal Active Members: " << totalActiveMembers << endl;
+    }
+};
+
+int Member::totalActiveMembers = 0;
+
+int main()
+{
+    int n;
+
+    cout << "Enter Number of Members: ";
+    cin >> n;
+
+    Member members[n];
+
+    for (int i = 0; i < n; i++)
+    {
+        cout << "\nEnter Details for Member " << i + 1 << endl;
+        members[i].assignPlan();
+    }
+
+    cout << "\n--- Membership Details ---\n";
+
+    for (int i = 0; i < n; i++)
+    {
+        members[i].displayDetails();
+    }
+
+    Member::displayTotalMembers();
+
+    return 0;
+}
